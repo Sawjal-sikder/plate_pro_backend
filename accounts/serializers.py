@@ -20,8 +20,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
         data = super().validate(attrs)  
-        user = self.user
-        data['driving_license'] = bool(user.driving_license)
         return data
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -36,7 +34,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'full_name', 'phone_number', 'driving_license', 'password', 'password2']
+        fields = ['email', 'full_name', 'phone_number', 'password', 'password2']
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -52,10 +50,6 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         return user
 
-class UpdateDrivingLicenseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["driving_license"]
 
 class VerifyActiveCodeSerializer(serializers.Serializer):
     email = serializers.EmailField()

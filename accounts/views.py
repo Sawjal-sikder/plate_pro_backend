@@ -27,13 +27,6 @@ class RegisterView(generics.CreateAPIView):
             # "user": user_data
             }, status=status.HTTP_201_CREATED)
         
-# patch method for update driving licence
-class UpdateDrivingLicenseView(generics.UpdateAPIView):
-    serializer_class = UpdateDrivingLicenseSerializer
-    parser_classes = [MultiPartParser, FormParser]
-
-    def get_object(self):
-        return self.request.user
 
 class VerifyCodeView(generics.CreateAPIView):
     serializer_class = VerifyActiveCodeSerializer

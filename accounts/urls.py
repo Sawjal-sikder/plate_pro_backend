@@ -6,7 +6,6 @@ from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView
 
 urlpatterns = [
     path('auth/register/', RegisterView.as_view(), name='registration'),
-    path('auth/update/driving-license/', UpdateDrivingLicenseView.as_view(), name='update_driving_license'),
     path('auth/active/user/', VerifyCodeView.as_view(), name='verify_code'),
     path('auth/resend/code/', ResendCodeView.as_view(), name='resend_code'),
     path('auth/login/', CustomTokenObtainPairView.as_view(), name='access_token'),
@@ -23,8 +22,6 @@ urlpatterns = [
     path('auth/users/<int:pk>/', UserDetailsUpdateView.as_view(), name='user_details_update'),
     path('auth/users/update/', UserUpdateView.as_view(), name='user_update'),
     path('auth/users/activate/<int:id>/', UserActivateView.as_view(), name='user_activate'),
-    path('auth/users/download/pdf/', download_all_user_view, name='download_all_users_pdf'),
-    path('auth/users/download/excel/', download_all_user_excel_view, name='download_all_users_excel'),
     path('auth/users/premium/<int:id>/', UserPermissionPremiumView.as_view(), name='user_premium_status'),
     
         # for social login
