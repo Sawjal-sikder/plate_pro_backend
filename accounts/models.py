@@ -7,13 +7,11 @@ from django.utils import timezone
 from django.core.mail import send_mail
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, email, full_name, phone_number, password=None, **extra_fields):
+    def create_user(self, email, full_name, phone_number=None, password=None, **extra_fields):
         if not email:
             raise ValueError('Email must be set')
         if not full_name:
             raise ValueError('Full name must be set')
-        if not phone_number:
-            raise ValueError('Phone number must be set')
 
         email = self.normalize_email(email)
         user = self.model(email=email, full_name=full_name, phone_number=phone_number, **extra_fields)
@@ -21,7 +19,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, full_name, phone_number, password=None, **extra_fields):
+    def create_superuser(self, email, full_name, phone_number=None, password=None, **extra_fields):
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
