@@ -21,9 +21,14 @@ class RegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        user_data = self.get_serializer(user).data  
+        user_data = self.get_serializer(user).data
+        tocken = RefreshToken.for_user(user)  
         return Response({
             "message": "Your account has been created successfully. You can now log in.",
+            "tokens": {
+                "access": str(tocken.access_token),
+                "refresh": str(tocken)
+            },
             # "user": user_data
             }, status=status.HTTP_201_CREATED)
         
