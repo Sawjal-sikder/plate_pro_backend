@@ -1,0 +1,235 @@
+from .serializers import *
+from warnings import filters
+from jsonschema import ValidationError
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import generics, status, permissions, filters
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+class RegisterView(generics.CreateAPIView):
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
+    # parser_classes = [MultiPartParser, FormParser]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        user_data = self.get_serializer(user).data  
+        return Response({
+            "message": "Your account has been created successfully. You can now log in.",
+            # "user": user_data
+            }, status=status.HTTP_201_CREATED)
+        
+# patch method for update driving licence
+class UpdateDrivingLicenseView(generics.UpdateAPIView):
+    serializer_class = UpdateDrivingLicenseSerializer
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_object(self):
+        return self.request.user
+
+class VerifyCodeView(generics.CreateAPIView):
+    serializer_class = VerifyActiveCodeSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {"message": "Email verified successfully. Account activated."},
+            status=status.HTTP_200_OK
+        )
+        
+
+class ResendCodeView(generics.CreateAPIView):
+    serializer_class = ResendCodeSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "A new verification code has been sent to your email."}, status=status.HTTP_200_OK)
+
+
+class ForgotPasswordView(generics.GenericAPIView):
+    serializer_class = ForgotPasswordSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "Reset code sent to email."}, status=status.HTTP_200_OK)
+    
+    
+class VerifyCodeView(generics.GenericAPIView):
+    serializer_class = VerfifyCodeSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # You can access validated user and code here if needed:
+        user = serializer.user
+        reset_code = serializer.reset_code
+
+        # Optionally mark the code as not used
+        reset_code.is_used = False
+        reset_code.save()
+
+        return Response({"message": "Code verified successfully."}, status=status.HTTP_200_OK)
+
+
+class SetNewPasswordView(generics.GenericAPIView):
+    serializer_class = SetNewPasswordSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        user = serializer.user
+        refresh = RefreshToken.for_user(user)
+        
+        return Response(
+            {"message": "Your password has been changed successfully.",
+                          "tokens": {
+                              "access": str(refresh.access_token),
+                              "refresh": str(refresh)
+                          }
+                         }, status=200)
+
+
+
+class ChangePasswordView(generics.GenericAPIView):
+    serializer_class = ChangePasswordSerializer
+    # permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = request.user
+        user.set_password(serializer.validated_data['new_password'])
+        user.save()
+
+        return Response({"detail": "Password changed successfully."}, status=status.HTTP_200_OK)
+    
+class LogoutView(generics.GenericAPIView):
+    serializer_class = LogoutSerializer
+    # permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        refresh_token = serializer.validated_data['refresh']
+
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({"detail": "Successfully logged out."}, status=status.HTTP_205_RESET_CONTENT)
+        except TokenError:
+            return Response({"detail": "Invalid or expired token."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+        
+class UserListView(generics.ListAPIView):
+    serializer_class = userListSerializer
+    queryset = User.objects.all()
+    permission_classes = [permissions.IsAdminUser]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['full_name', 'email', 'phone_number']
+    
+
+class UserDetailsUpdateView(generics.RetrieveUpdateAPIView):
+    serializer_class = userListSerializer
+    queryset = User.objects.all()
+    permission_classes = [permissions.IsAdminUser]
+
+class UserUpdateView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserUpdateSerializer  
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_object(self):
+        return self.request.user
+
+
+class UserActivateView(generics.UpdateAPIView):
+    serializer_class = UserActivateSerializer
+    queryset = User.objects.all()
+    permission_classes = [permissions.IsAdminUser]
+    lookup_field = 'id'
+
+
+class UserPermissionPremiumView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = [permissions.IsAdminUser]
+    lookup_field = 'id'
+
+    def post(self, request, *args, **kwargs):
+        user = self.get_object()
+        is_premium = request.data.get('is_premium')
+
+        if is_premium is None:
+            return Response(
+                {"detail": "is_premium field is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Convert to boolean (handle string input)
+        if isinstance(is_premium, str):
+            is_premium = is_premium.lower() in ["true", "1", "yes"]
+
+        user.is_premium = bool(is_premium)
+        user.save()
+
+        return Response(
+            {"detail": f"User premium status updated to {user.is_premium}."},
+            status=status.HTTP_200_OK
+        )
+
+
+class CurrentUserView(generics.RetrieveAPIView):
+    serializer_class = CurrentUserSerializer
+
+    def get_object(self):
+        return self.request.user
+    
+    
+    
+
+class DeleteAccountView(generics.DestroyAPIView):
+
+    def get_object(self):
+        # Get the user making the request
+        user = self.request.user
+        password = self.request.data.get("password")
+        conform_password = self.request.data.get("conform_password")
+        
+        # Validate password and conform_password
+        if not password or not conform_password:
+            raise ValidationError({"detail": "Both password and conform_password are required."})
+        if password != conform_password:
+            raise ValidationError({"detail": "Passwords do not match."})
+        if user.check_password(password) is False:
+            raise ValidationError({"detail": "Incorrect password."})
+        return user
+    
+    # account deletion
+    def delete(self, request, *args, **kwargs):
+        user = self.get_object()
+        user.delete()
+        return Response({"detail": "Account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)

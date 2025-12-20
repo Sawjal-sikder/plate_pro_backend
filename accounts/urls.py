@@ -1,0 +1,33 @@
+from django.urls import path
+from .views import *
+from .social_auth import GoogleLoginView, AppleLoginView
+from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView)
+
+
+urlpatterns = [
+    path('auth/register/', RegisterView.as_view(), name='registration'),
+    path('auth/update/driving-license/', UpdateDrivingLicenseView.as_view(), name='update_driving_license'),
+    path('auth/active/user/', VerifyCodeView.as_view(), name='verify_code'),
+    path('auth/resend/code/', ResendCodeView.as_view(), name='resend_code'),
+    path('auth/login/', CustomTokenObtainPairView.as_view(), name='access_token'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='refresh_token'),
+    path('auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
+    path('auth/verify_code/', VerifyCodeView.as_view(), name='verify_code'),
+    path('auth/set_new_password/', SetNewPasswordView.as_view(), name='set_new_password'),
+    path('auth/change-password/', ChangePasswordView.as_view(), name='change-password'),
+    path('auth/logout/', LogoutView.as_view(), name='logout'),
+    path("auth/account-delete/", DeleteAccountView.as_view(), name="account-delete"),
+    # for admin
+    path('auth/users/', UserListView.as_view(), name='user_list'),
+    path('auth/user/details/', CurrentUserView.as_view(), name='current_user'),
+    path('auth/users/<int:pk>/', UserDetailsUpdateView.as_view(), name='user_details_update'),
+    path('auth/users/update/', UserUpdateView.as_view(), name='user_update'),
+    path('auth/users/activate/<int:id>/', UserActivateView.as_view(), name='user_activate'),
+    path('auth/users/download/pdf/', download_all_user_view, name='download_all_users_pdf'),
+    path('auth/users/download/excel/', download_all_user_excel_view, name='download_all_users_excel'),
+    path('auth/users/premium/<int:id>/', UserPermissionPremiumView.as_view(), name='user_premium_status'),
+    
+        # for social login
+    path('auth/google/', GoogleLoginView.as_view(), name='google_login'),
+    path('auth/apple/', AppleLoginView.as_view(), name='apple_login'),
+]
