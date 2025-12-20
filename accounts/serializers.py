@@ -27,6 +27,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=CustomUser.objects.all(), message="email already exists")]
     )
     phone_number = serializers.CharField(
+        required=False,
+        allow_blank=True,
         validators=[UniqueValidator(queryset=CustomUser.objects.all(), message="phone number already exists")]
     )
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])

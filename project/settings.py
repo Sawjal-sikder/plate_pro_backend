@@ -81,32 +81,32 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Get database configuration from environment variables
 DATABASE_ENGINE = os.getenv('DATABASE_ENGINE', 'django.db.backends.sqlite3')
 
-if DATABASE_ENGINE == 'django.db.backends.sqlite3':
-    DATABASES = {
-        'default': {
-            'ENGINE': DATABASE_ENGINE,
-            'NAME': BASE_DIR / os.getenv('DATABASE_NAME', 'db.sqlite3'),
-        }
-    }
-else:
-    # PostgreSQL or other database configuration
-    DATABASES = {
-        'default': {
-            'ENGINE': DATABASE_ENGINE,
-            'NAME': os.getenv('DATABASE_NAME'),
-            'USER': os.getenv('DATABASE_USER'),
-            'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-            'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
-            'PORT': os.getenv('DATABASE_PORT', '5432'),
-        }
-    }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',  
-#         'NAME': BASE_DIR / 'db.sqlite3',     
+# if DATABASE_ENGINE == 'django.db.backends.sqlite3':
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': DATABASE_ENGINE,
+#             'NAME': BASE_DIR / os.getenv('DATABASE_NAME', 'db.sqlite3'),
+#         }
 #     }
-# }
+# else:
+#     # PostgreSQL or other database configuration
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': DATABASE_ENGINE,
+#             'NAME': os.getenv('DATABASE_NAME'),
+#             'USER': os.getenv('DATABASE_USER'),
+#             'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+#             'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
+#             'PORT': os.getenv('DATABASE_PORT', '5432'),
+#         }
+#     }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',  
+        'NAME': BASE_DIR / 'db.sqlite3',     
+    }
+}
 
 
 # Password validation
@@ -146,7 +146,7 @@ USE_TZ = True
 STATIC_URL = os.getenv('STATIC_URL', '/static/')
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 
-STATICFILES_DIRS = [BASE_DIR / 'static']
+# STATICFILES_DIRS = [BASE_DIR / 'static']  # Commented out - directory doesn't exist
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Add STATIC_ROOT for collectstatic (production use)
