@@ -39,7 +39,7 @@ INSTALLED_APPS = [
      'rest_framework.authtoken',
     # for app
     'accounts',
-    # 'services',
+    'services',
        
 ]
 
@@ -76,31 +76,6 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-# Get database configuration from environment variables
-DATABASE_ENGINE = os.getenv('DATABASE_ENGINE', 'django.db.backends.sqlite3')
-
-# if DATABASE_ENGINE == 'django.db.backends.sqlite3':
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': DATABASE_ENGINE,
-#             'NAME': BASE_DIR / os.getenv('DATABASE_NAME', 'db.sqlite3'),
-#         }
-#     }
-# else:
-#     # PostgreSQL or other database configuration
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': DATABASE_ENGINE,
-#             'NAME': os.getenv('DATABASE_NAME'),
-#             'USER': os.getenv('DATABASE_USER'),
-#             'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-#             'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
-#             'PORT': os.getenv('DATABASE_PORT', '5432'),
-#         }
-#     }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  
@@ -108,9 +83,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -140,30 +112,32 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = os.getenv('STATIC_URL', '/static/')
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
-
-# STATICFILES_DIRS = [BASE_DIR / 'static']  # Commented out - directory doesn't exist
 MEDIA_ROOT = BASE_DIR / 'media'
-
-# Add STATIC_ROOT for collectstatic (production use)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS', 'True').lower() == 'true'
+# CORS
+CORS_ALLOW_ALL_ORIGINS = os.getenv(
+    "CORS_ALLOW_ALL_ORIGINS", "False"
+).lower() == "true"
+
+CORS_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
+# CSRF
 CSRF_TRUSTED_ORIGINS = [
-    "https://nestocbackend.dsrt321.online",
-    "http://nestocbackend.dsrt321.online",
+    origin.strip()
+    for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
 ]
 
 
@@ -247,23 +221,6 @@ REST_USE_JWT = True
 SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
 
 
-
-# SOCIALACCOUNT_PROVIDERS = {
-#     # 'apple': {
-#     #     'APP': {
-#     #         'client_id': '<CLIENT_ID>',
-#     #         'team_id': '<TEAM_ID>',
-#     #         'key_id': '<KEY_ID>',
-#     #         'secret': '<PRIVATE_KEY>',
-#     #     }
-#     # },
-#     'google': {
-#         'APP': {
-#             'client_id': '563464993336-q.apps.googleusercontent.com',
-#             'secret': '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',
-#         }
-#     }
-# }
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
