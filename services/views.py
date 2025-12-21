@@ -1,12 +1,12 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.http import HttpResponse
-from django.conf import settings
-from .serializers import PlateDataSerializer
 from .utils import calculate_area, generate_dxf
-import os
+from rest_framework.response import Response
+from .serializers import PlateDataSerializer
+from rest_framework.views import APIView
+from django.http import HttpResponse
+from rest_framework import status
+from django.conf import settings
 import uuid
+import os
 
 
 class PlateCalculationView(APIView):
