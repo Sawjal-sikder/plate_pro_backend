@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import *
-from .social_auth import GoogleLoginView, AppleLoginView
+from .social_auth import GoogleLoginView
 from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView)
 
 
@@ -26,5 +26,5 @@ urlpatterns = [
     
         # for social login
     path('auth/google/', GoogleLoginView.as_view(), name='google_login'),
-    path('auth/apple/', AppleLoginView.as_view(), name='apple_login'),
+    # path('auth/apple/', AppleLoginView.as_view(), name='apple_login'),
 ]

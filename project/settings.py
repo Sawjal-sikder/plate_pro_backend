@@ -276,6 +276,10 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+# Google OAuth Settings
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+
 LOGIN_URL = os.getenv('LOGIN_URL', '/auth/login/')
 LOGOUT_URL = os.getenv('LOGOUT_URL', '/auth/logout/')
 LOGIN_REDIRECT_URL = os.getenv('LOGIN_REDIRECT_URL', '/')

@@ -168,3 +168,4 @@ websockets
 whitenoise
 yarl
 zipp
+ezdxf
