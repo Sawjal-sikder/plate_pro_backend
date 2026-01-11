@@ -1,6 +1,6 @@
-from .utils import calculate_area, generate_dxf
+from ..utils import calculate_area, generate_dxf
 from rest_framework.response import Response
-from .serializers import PlateDataSerializer
+from ..serializers.serializers import PlateDataSerializer
 from rest_framework.views import APIView
 from django.http import HttpResponse
 from rest_framework import status
