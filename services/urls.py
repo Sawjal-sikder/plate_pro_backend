@@ -1,5 +1,11 @@
 from django.urls import path #type: ignore
-from .views import plate_calculate_views, plate_shape, plate_shape_variant, cart_item
+from .views import (
+    plate_calculate_views,
+    plate_shape,
+    plate_shape_variant,
+    cart_item,
+    drilling_service
+)
 
 urlpatterns = [
     path('calculate/', plate_calculate_views.PlateCalculationView.as_view(), name='plate-calculate'),
@@ -16,4 +22,6 @@ urlpatterns = [
     path('plate-variants/', plate_shape_variant.PlateShapeVariantListCreateView.as_view(), name='plate-variant-list-create'),
     path('plate-variants/<int:pk>/', plate_shape_variant.PlateShapeVariantRetrieveUpdateDestroyView.as_view(), name='plate-variant-detail-dashboard'),
     # DrillingService URLs
+    path('drilling-services/', drilling_service.DrillingServiceCreateListView.as_view(), name='drilling-service-list-create'),
+    path('drilling-services/<int:pk>/', drilling_service.DrillingServiceRetrieveUpdateDestroyView.as_view(), name='drilling-service-detail-dashboard'),
 ]
