@@ -53,3 +53,5 @@ class PlateShapeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
         return Response({
             "message": "Plate shape deleted successfully"
         })
+        
+        
