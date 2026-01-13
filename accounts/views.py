@@ -172,34 +172,6 @@ class UserActivateView(generics.UpdateAPIView):
     lookup_field = 'id'
 
 
-class UserPermissionPremiumView(generics.UpdateAPIView):
-    queryset = User.objects.all()
-    permission_classes = [permissions.IsAdminUser]
-    lookup_field = 'id'
-
-    def post(self, request, *args, **kwargs):
-        user = self.get_object()
-        is_premium = request.data.get('is_premium')
-
-        if is_premium is None:
-            return Response(
-                {"detail": "is_premium field is required."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # Convert to boolean (handle string input)
-        if isinstance(is_premium, str):
-            is_premium = is_premium.lower() in ["true", "1", "yes"]
-
-        user.is_premium = bool(is_premium)
-        user.save()
-
-        return Response(
-            {"detail": f"User premium status updated to {user.is_premium}."},
-            status=status.HTTP_200_OK
-        )
-
-
 class CurrentUserView(generics.RetrieveAPIView):
     serializer_class = CurrentUserSerializer
 
@@ -209,25 +181,15 @@ class CurrentUserView(generics.RetrieveAPIView):
     
     
 
-class DeleteAccountView(generics.DestroyAPIView):
-
-    def get_object(self):
-        # Get the user making the request
-        user = self.request.user
-        password = self.request.data.get("password")
-        conform_password = self.request.data.get("conform_password")
-        
-        # Validate password and conform_password
-        if not password or not conform_password:
-            raise ValidationError({"detail": "Both password and conform_password are required."})
-        if password != conform_password:
-            raise ValidationError({"detail": "Passwords do not match."})
-        if user.check_password(password) is False:
-            raise ValidationError({"detail": "Incorrect password."})
-        return user
+class DeleteAccountView(generics.GenericAPIView):
+    serializer_class = DeleteAccountSerializer
+    permission_classes = [permissions.IsAuthenticated]
     
-    # account deletion
-    def delete(self, request, *args, **kwargs):
-        user = self.get_object()
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        # Delete the user account
+        user = request.user
         user.delete()
         return Response({"detail": "Account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)

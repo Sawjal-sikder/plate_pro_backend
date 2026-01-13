@@ -22,7 +22,6 @@ urlpatterns = [
     path('auth/users/<int:pk>/', UserDetailsUpdateView.as_view(), name='user_details_update'),
     path('auth/users/update/', UserUpdateView.as_view(), name='user_update'),
     path('auth/users/activate/<int:id>/', UserActivateView.as_view(), name='user_activate'),
-    path('auth/users/premium/<int:id>/', UserPermissionPremiumView.as_view(), name='user_premium_status'),
     
         # for social login
     path('auth/google/', GoogleLoginView.as_view(), name='google_login'),

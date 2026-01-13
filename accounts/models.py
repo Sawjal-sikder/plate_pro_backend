@@ -1,10 +1,10 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.db import models
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin  #type: ignore
+from django.db import models #type: ignore
+from django.contrib.auth import get_user_model #type: ignore
 import random
 from datetime import timedelta
-from django.utils import timezone
-from django.core.mail import send_mail
+from django.utils import timezone #type: ignore
+from django.core.mail import send_mail #type: ignore
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, full_name, phone_number=None, password=None, **extra_fields):

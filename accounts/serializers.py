@@ -244,7 +244,7 @@ class LogoutSerializer(serializers.Serializer):
 class userListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'full_name', 'email', 'phone_number', 'is_active', 'is_premium']
+        fields = ['id', 'full_name', 'email', 'phone_number', 'is_active']
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     profile_image = serializers.ImageField(use_url=True, required=False)
@@ -275,5 +275,30 @@ class UserActivateSerializer(serializers.ModelSerializer):
 class CurrentUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'full_name', 'email', 'phone_number', 'profile_image', 'is_active', 'is_premium']
+        fields = ['id', 'full_name', 'email', 'phone_number', 'profile_image', 'is_active']
+
+
+class DeleteAccountSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True, required=True)
+    conform_password = serializers.CharField(write_only=True, required=True)
+    
+    def validate(self, data):
+        password = data.get('password')
+        conform_password = data.get('conform_password')
+        
+        if password != conform_password:
+            raise serializers.ValidationError("Passwords do not match.")
+        
+        user = self.context['request'].user
+        if not user.check_password(password):
+            raise serializers.ValidationError("Incorrect password.")
+            
+        return data
+
+
+class GoogleLoginSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True, help_text="Google OAuth token")
+    
+    class Meta:
+        fields = ['token']
         

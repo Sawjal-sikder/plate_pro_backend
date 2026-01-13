@@ -1,7 +1,7 @@
 from pathlib import Path
 from datetime import timedelta
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv #type: ignore
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'dj_rest_auth.registration',
      'rest_framework.authtoken',
+     "drf_spectacular",
     # for app
     'accounts',
     'services',
@@ -150,6 +151,7 @@ ACCOUNT_LOGIN_METHODS = {'email'}
 
 # for jwt authentication
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
@@ -258,3 +260,15 @@ CELERY_RESULT_SERIALIZER = 'json'
 USE_TZ = True
 TIME_ZONE = 'Asia/Dhaka'
 
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Product API',
+    'DESCRIPTION': 'API for managing products',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': False,
+    }
+}

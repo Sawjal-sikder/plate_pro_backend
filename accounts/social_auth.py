@@ -1,24 +1,30 @@
-import requests
-from django.conf import settings
-from django.contrib.auth import get_user_model
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.tokens import RefreshToken
-from google.oauth2 import id_token
-from google.auth.transport import requests as google_requests
-import jwt
+import requests #type: ignore
+from django.conf import settings #type: ignore
+from django.contrib.auth import get_user_model #type: ignore
+from rest_framework.views import APIView #type: ignore
+from rest_framework.generics import GenericAPIView #type: ignore
+from rest_framework.response import Response    #type: ignore
+from rest_framework import status #type: ignore
+from rest_framework.permissions import AllowAny #type: ignore
+from rest_framework_simplejwt.tokens import RefreshToken    #type: ignore
+from google.oauth2 import id_token #type: ignore
+from google.auth.transport import requests as google_requests #type: ignore
+import jwt #type: ignore
 import time
+from .serializers import GoogleLoginSerializer
 
 User = get_user_model()
 
 
-class GoogleLoginView(APIView):
+class GoogleLoginView(GenericAPIView):
     permission_classes = [AllowAny]
+    serializer_class = GoogleLoginSerializer
     
     def post(self, request):
-        token = request.data.get('token')
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        token = serializer.validated_data['token']
         if not token:
             return Response({'error': 'Token is required'}, status=status.HTTP_400_BAD_REQUEST)
         

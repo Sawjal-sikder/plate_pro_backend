@@ -1,10 +1,11 @@
-from django.contrib import admin
-from django.urls import path, include
-from django.views.static import serve
-from django.urls import re_path
-from django.conf import settings
-from django.conf.urls.static import static
-from django.http import JsonResponse
+from django.contrib import admin #type: ignore
+from django.urls import path, include #type: ignore
+from django.views.static import serve #type: ignore
+from django.urls import re_path #type: ignore
+from django.conf import settings #type: ignore
+from django.conf.urls.static import static  #type: ignore
+from django.http import JsonResponse #type: ignore
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView #type: ignore
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -16,6 +17,9 @@ urlpatterns = [
         "service": "Project Backend API",
         "message": "Service is operational"
     })),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
 ]
 
