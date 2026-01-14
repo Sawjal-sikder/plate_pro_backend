@@ -262,8 +262,8 @@ TIME_ZONE = 'Asia/Dhaka'
 
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Product API',
-    'DESCRIPTION': 'API for managing products',
+    'TITLE': 'Plate Pro API Documentation',
+    'DESCRIPTION': 'A comprehensive RESTful API for managing plate manufacturing services, including plate shapes, drilling services, cart management, and user account operations.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'SWAGGER_UI_SETTINGS': {
