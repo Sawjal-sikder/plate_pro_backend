@@ -1,18 +1,18 @@
 from django.urls import path #type: ignore
 from .views import (
-    plate_calculate_views,
     plate_shape,
     plate_shape_variant,
     cart_item,
-    drilling_service
+    drilling_service,
+    add_to_cart,
 )
 
 urlpatterns = [
-    path('calculate/', plate_calculate_views.PlateCalculationView.as_view(), name='plate-calculate'),
     path('plate-shapes/list/', plate_shape.PlateShapeListView.as_view(), name='plate-shape-list'),
     path('plate-shapes/details/<int:pk>/', plate_shape.PlateShapeRetriveView.as_view(), name='plate-shape-detail'),
     # cart item URLs
-    path('cart-items/', cart_item.CartItemListCreateView.as_view(), name='cart-item-list-create'),
+    # path('cart-items/', cart_item.CartItemListCreateView.as_view(), name='cart-item-list-create'),
+    path("cart/", add_to_cart.AddToCartView.as_view(), name="add-to-cart"),
     
     
     # for dashboard
