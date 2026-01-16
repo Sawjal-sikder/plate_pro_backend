@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions, status #type: ignore
 from rest_framework.response import Response #type: ignore
 from ..models import CartItem
-from ..serializers.add_to_cart import CartItemSerializer, CartItemCreateSerializer
+from ..serializers.add_to_cart import CartItemSerializer
 
 class AddToCartView(generics.ListCreateAPIView):
     queryset = CartItem.objects.all()

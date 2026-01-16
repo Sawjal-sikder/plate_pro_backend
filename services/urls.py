@@ -2,7 +2,6 @@ from django.urls import path #type: ignore
 from .views import (
     plate_shape,
     plate_shape_variant,
-    cart_item,
     drilling_service,
     add_to_cart,
 )
