@@ -60,7 +60,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "quantity",
             "holes_count",
         ]
-        read_only_fields = ["created_at", "updated_at", "total_amount", "status", "id", "user"]
+        read_only_fields = ["created_at", "updated_at", "total_amount", "id", "user"]
         
     def create(self, validated_data):
         from decimal import Decimal

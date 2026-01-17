@@ -276,6 +276,22 @@ class CurrentUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'full_name', 'email', 'phone_number', 'profile_image', 'is_active']
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        if instance.is_active:
+            if instance.is_superuser:
+                representation['user_role'] = 'Superuser'
+            elif instance.is_staff:
+                representation['user_role'] = 'Admin'
+            else:
+                representation['user_role'] = 'User'
+        else:
+            representation['user_role'] = 'Inactive'
+
+        return representation
+
 
 
 class DeleteAccountSerializer(serializers.Serializer):
