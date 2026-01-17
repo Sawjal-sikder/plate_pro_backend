@@ -7,6 +7,9 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, status, permissions, filters
+from .pagination import UserPagination
+from django.contrib.auth import get_user_model #type: ignore
+User = get_user_model()
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -149,6 +152,10 @@ class UserListView(generics.ListAPIView):
     permission_classes = [permissions.IsAdminUser]
     filter_backends = [filters.SearchFilter]
     search_fields = ['full_name', 'email', 'phone_number']
+    pagination_class = UserPagination
+    
+    def get_queryset(self):  
+        return User.objects.filter(is_staff=False, is_active=True)
     
 
 class UserDetailsUpdateView(generics.RetrieveUpdateAPIView):

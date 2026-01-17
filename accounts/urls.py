@@ -2,6 +2,8 @@ from django.urls import path
 from .views import *
 from .social_auth import GoogleLoginView
 from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView)
+from .dashboard_views import DashboardView
+from .admin_view import AdminView
 
 
 urlpatterns = [
@@ -26,4 +28,9 @@ urlpatterns = [
         # for social login
     path('auth/google/', GoogleLoginView.as_view(), name='google_login'),
     # path('auth/apple/', AppleLoginView.as_view(), name='apple_login'),
+    path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    
+    
+    # for admin user management
+    path('admin/users/', AdminView.as_view(), name='admin_user_management'),
 ]
