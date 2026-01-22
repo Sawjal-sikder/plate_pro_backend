@@ -155,7 +155,7 @@ class UserListView(generics.ListAPIView):
     pagination_class = UserPagination
     
     def get_queryset(self):  
-        return User.objects.filter(is_staff=False, is_active=True)
+        return User.objects.filter(is_staff=False, is_superuser=False)
     
 
 class UserDetailsUpdateView(generics.RetrieveUpdateAPIView):
