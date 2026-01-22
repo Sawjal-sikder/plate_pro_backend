@@ -126,3 +126,37 @@ class OrderItem(models.Model):
         elif self.drilling_service:
             return f"OrderItem {self.id} - {self.drilling_service.name} ({self.holes_count} holes)"
         return f"OrderItem {self.id}"
+    
+    
+
+
+
+
+
+class Materials(models.Model):
+    name = models.CharField(max_length=255)
+    icon = models.ImageField(upload_to='material/icons/', null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+    
+class Thickness(models.Model):
+    materials = models.ForeignKey(Materials, on_delete=models.CASCADE, related_name='variants')
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name

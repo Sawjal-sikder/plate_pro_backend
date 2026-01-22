@@ -6,6 +6,10 @@ from .views import (
     add_to_cart,
     order_view,
 )
+from .views.materials_thickness_views import (
+    MaterialsListCreateView,
+    ThicknessListCreateView,
+)
 
 urlpatterns = [
     path('plate-shapes/list/', plate_shape.PlateShapeListView.as_view(), name='plate-shape-list'),
@@ -26,4 +30,11 @@ urlpatterns = [
     # DrillingService URLs
     path('drilling-services/', drilling_service.DrillingServiceCreateListView.as_view(), name='drilling-service-list-create'),
     path('drilling-services/<int:pk>/', drilling_service.DrillingServiceRetrieveUpdateDestroyView.as_view(), name='drilling-service-detail-dashboard'),
+    
+    
+    # Materials and Thickness URLs
+    path('materials/', MaterialsListCreateView.as_view(), name='materials-list-create'),
+    # path('materials/<int:pk>/', MaterialsRetrieveUpdateDestroyView.as_view(), name='materials-detail-dashboard'),
+    path('thicknesses/', ThicknessListCreateView.as_view(), name='thickness-list-create'),
+    # path('thicknesses/<int:pk>/', ThicknessRetrieveUpdateDestroyView.as_view(), name='thickness-detail-dashboard'),
 ]
