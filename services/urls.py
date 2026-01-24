@@ -11,6 +11,15 @@ from .views.materials_thickness_views import (
     ThicknessListCreateView,
 )
 
+from .views.plate_order_views import (
+    CreateOrderPlateView,
+    OrderPlateListCreateView,
+    OrderPlateDetailView,
+    OrderItemPlateListCreateView,
+    OrderItemPlateDetailView,
+
+)
+
 urlpatterns = [
     path('plate-shapes/list/', plate_shape.PlateShapeListView.as_view(), name='plate-shape-list'),
     path('plate-shapes/details/<int:pk>/', plate_shape.PlateShapeRetriveView.as_view(), name='plate-shape-detail'),
@@ -37,4 +46,13 @@ urlpatterns = [
     # path('materials/<int:pk>/', MaterialsRetrieveUpdateDestroyView.as_view(), name='materials-detail-dashboard'),
     path('thicknesses/', ThicknessListCreateView.as_view(), name='thickness-list-create'),
     # path('thicknesses/<int:pk>/', ThicknessRetrieveUpdateDestroyView.as_view(), name='thickness-detail-dashboard'),
+    
+    
+    # Plate Order URLs
+    path('order-plates/create/', CreateOrderPlateView.as_view(), name='create-order-plate'),
+    path('order-plates/', OrderPlateListCreateView.as_view(), name='order-plate-list-create'),
+    path('order-plates/<int:pk>/', OrderPlateDetailView.as_view(), name='order-plate-detail'),
+    path('order-plates/items/', OrderItemPlateListCreateView.as_view(), name='order-item-plate-list-create'),
+    path('order-plates/items/<int:pk>/', OrderItemPlateDetailView.as_view(), name='order-item-plate-detail'),
+    
 ]

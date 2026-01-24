@@ -160,3 +160,37 @@ class Thickness(models.Model):
 
     def __str__(self):
         return self.name
+    
+   
+
+
+class OrderPlate(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    tatalArea = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    totalPerimeter = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    material = models.ForeignKey(Materials, on_delete=models.CASCADE)
+    thickness = models.ForeignKey(Thickness, on_delete=models.CASCADE)
+    color = models.CharField(max_length=100)
+    totalDrilingHoles = models.PositiveIntegerField()
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"OrderPlate {self.id} - {self.user.first_name}"
+
+
+class OrderItemPlate(models.Model):
+    order = models.ForeignKey(OrderPlate, on_delete=models.CASCADE, related_name='plate_items')
+    name = models.CharField(max_length=255)
+    icon = models.ImageField(upload_to='order_plate/icons/', null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    points = models.JSONField()
+    drillingHole = models.JSONField()
+    closed = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"OrderItemPlate {self.id} - {self.name}"
