@@ -16,6 +16,14 @@ class OrderListCreateView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
         
         
+class OrderListView(generics.ListAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = UserPagination
+
+        
+        
 class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer

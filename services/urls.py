@@ -28,6 +28,7 @@ urlpatterns = [
     # path('cart-items/', cart_item.CartItemListCreateView.as_view(), name='cart-item-list-create'),
     path("cart/", add_to_cart.AddToCartView.as_view(), name="add-to-cart"),
     path("orders/", order_view.OrderListCreateView.as_view(), name="order-list-create"),
+    path("orders/list/", order_view.OrderListView.as_view(), name="order-list"),
     path("orders/<int:pk>/", order_view.OrderDetailView.as_view(), name="order-detail"),
     
     
