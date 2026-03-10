@@ -34,11 +34,7 @@ class OrderPlateDetailView(generics.RetrieveUpdateDestroyAPIView):
         return self.queryset.filter(user=self.request.user)
     
     
-    
-    
-    
-    
-    
+      
     
 class OrderItemPlateListCreateView(generics.ListCreateAPIView):
     queryset = OrderItemPlate.objects.all()
@@ -62,4 +58,5 @@ class OrderItemPlateDetailView(generics.RetrieveUpdateDestroyAPIView):
         if order_id:
             return self.queryset.filter(order__id=order_id, order__user=self.request.user)
         return self.queryset.filter(order__user=self.request.user)
+    
     

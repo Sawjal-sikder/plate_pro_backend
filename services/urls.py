@@ -19,6 +19,7 @@ from .views.plate_order_views import (
     OrderItemPlateDetailView,
 
 )
+from .views.DrillingArea import DrillingAreaView
 
 urlpatterns = [
     path('plate-shapes/list/', plate_shape.PlateShapeListView.as_view(), name='plate-shape-list'),
@@ -54,5 +55,7 @@ urlpatterns = [
     path('order-plates/<int:pk>/', OrderPlateDetailView.as_view(), name='order-plate-detail'),
     path('order-plates/items/', OrderItemPlateListCreateView.as_view(), name='order-item-plate-list-create'),
     path('order-plates/items/<int:pk>/', OrderItemPlateDetailView.as_view(), name='order-item-plate-detail'),
-    
+
+    # Drilling Area URL
+    path('drilling-area/', DrillingAreaView.as_view(), name='drilling-area'),
 ]

@@ -51,6 +51,17 @@ class DrillingService(models.Model):
         return self.name
     
     
+class DrillingArea(models.Model):
+    top = models.DecimalField(max_digits=20, decimal_places=10, default=0)
+    left = models.DecimalField(max_digits=20, decimal_places=10, default=0)
+    buttom = models.DecimalField(max_digits=20, decimal_places=10, default=0)
+    right = models.DecimalField(max_digits=20, decimal_places=10, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"DrillingArea {self.id} - Top: {self.top}, Left: {self.left}, Buttom: {self.buttom}, Right: {self.right}"
+    
     
 class CartItem(models.Model): 
 
@@ -166,8 +177,8 @@ class Thickness(models.Model):
 
 class OrderPlate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    tatalArea = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    totalPerimeter = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    tatalArea = models.DecimalField(max_digits=20, decimal_places=10, blank=True, null=True)
+    totalPerimeter = models.DecimalField(max_digits=20, decimal_places=10, blank=True, null=True)
     material = models.ForeignKey(Materials, on_delete=models.CASCADE)
     thickness = models.ForeignKey(Thickness, on_delete=models.CASCADE)
     color = models.CharField(max_length=100)
