@@ -8,7 +8,9 @@ from .views import (
 )
 from .views.materials_thickness_views import (
     MaterialsListCreateView,
+    MaterialsRetrieveUpdateDestroyView,
     ThicknessListCreateView,
+    ThicknessRetrieveUpdateDestroyView,
 )
 
 from .views.plate_order_views import (
@@ -45,9 +47,9 @@ urlpatterns = [
     
     # Materials and Thickness URLs
     path('materials/', MaterialsListCreateView.as_view(), name='materials-list-create'),
-    # path('materials/<int:pk>/', MaterialsRetrieveUpdateDestroyView.as_view(), name='materials-detail-dashboard'),
+    path('materials/<int:pk>/', MaterialsRetrieveUpdateDestroyView.as_view(), name='materials-detail'),
     path('thicknesses/', ThicknessListCreateView.as_view(), name='thickness-list-create'),
-    # path('thicknesses/<int:pk>/', ThicknessRetrieveUpdateDestroyView.as_view(), name='thickness-detail-dashboard'),
+    path('thicknesses/<int:pk>/', ThicknessRetrieveUpdateDestroyView.as_view(), name='thickness-detail'),
     
     
     # Plate Order URLs

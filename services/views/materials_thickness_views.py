@@ -19,7 +19,13 @@ class MaterialsListCreateView(generics.ListCreateAPIView):
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+class MaterialsRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Materials.objects.all()
+    serializer_class = MaterialsSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 class ThicknessListCreateView(generics.ListCreateAPIView):
     queryset = Thickness.objects.all()
@@ -37,3 +43,9 @@ class ThicknessListCreateView(generics.ListCreateAPIView):
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ThicknessRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Thickness.objects.all()
+    serializer_class = ThicknessSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
