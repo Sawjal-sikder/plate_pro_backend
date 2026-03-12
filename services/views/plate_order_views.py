@@ -13,6 +13,11 @@ class CreateOrderPlateView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 
+class OrderPlateListView(generics.ListAPIView):
+    queryset = OrderPlate.objects.all()
+    serializer_class = OrderPlateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
 class OrderPlateListCreateView(generics.ListCreateAPIView):
     queryset = OrderPlate.objects.all()
     serializer_class = OrderPlateSerializer
