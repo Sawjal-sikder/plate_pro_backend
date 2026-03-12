@@ -20,6 +20,16 @@ class OrderPlateSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'tatalArea', 'totalPerimeter', 'material', 'thickness', 'color', 'totalDrilingHoles', 'total_price', 'plate_items', 'created_at', 'updated_at']
         read_only_fields = ['user','plate_items','created_at','updated_at']
         
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['user'] = {
+            'id': instance.user.id,
+            'full_name': instance.user.full_name,
+            'email': instance.user.email,
+            'phone_number': instance.user.phone_number,
+        }
+        return representation
+        
 
 class OrderPlateCreateWithItemsSerializer(serializers.ModelSerializer):
 
