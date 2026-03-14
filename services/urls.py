@@ -20,6 +20,7 @@ from .views.plate_order_views import (
     OrderItemPlateListCreateView,
     OrderItemPlateDetailView,
     OrderPlateListView,
+    OrderPlateSendMailView,
 
 )
 from .views.DrillingArea import DrillingAreaView
@@ -57,6 +58,7 @@ urlpatterns = [
     path('order-plates/create/', CreateOrderPlateView.as_view(), name='create-order-plate'),
     path('order-plates/', OrderPlateListCreateView.as_view(), name='order-plate-list-create'),
     path('order-plates/list/', OrderPlateListView.as_view(), name='order-plate-list'),
+    path('order-plates/send-mail/', OrderPlateSendMailView.as_view(), name='order-plate-send-mail'),
     path('order-plates/<int:pk>/', OrderPlateDetailView.as_view(), name='order-plate-detail'),
     path('order-plates/items/', OrderItemPlateListCreateView.as_view(), name='order-item-plate-list-create'),
     path('order-plates/items/<int:pk>/', OrderItemPlateDetailView.as_view(), name='order-item-plate-detail'),

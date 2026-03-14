@@ -1,4 +1,6 @@
 from rest_framework import generics, permissions, response #type: ignore
+from rest_framework.views import APIView #type: ignore
+from services.mail_orderpdf import send_order_html_email
 from services.models import OrderPlate, OrderItemPlate
 from services.serializers.plate_order_serializer import OrderItemPlateSerializer, OrderPlateCreateWithItemsSerializer, OrderPlateSerializer
 
@@ -65,3 +67,21 @@ class OrderItemPlateDetailView(generics.RetrieveUpdateDestroyAPIView):
         return self.queryset.filter(order__user=self.request.user)
     
     
+    
+class OrderPlateSendMailView(APIView):
+    def post(self, request, *args, **kwargs):
+        order_id = request.query_params.get('order_id')
+        email = request.query_params.get('email')
+        
+        if not order_id or not email:
+            return response.Response({'message': 'Order ID and email are required.'}, status=400)
+        
+        try:
+            order = OrderPlate.objects.get(id=order_id, user=request.user)
+            serializer = OrderPlateSerializer(order)
+            order_data = serializer.data
+            send_order_html_email.delay(order_data, email)
+            
+            return response.Response({'message': 'Order details sent via email successfully.', 'data': order_data}, status=200)
+        except OrderPlate.DoesNotExist:
+            return response.Response({'message': 'Order not found.'}, status=404)
